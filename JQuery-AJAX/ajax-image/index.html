@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Image with AJAX</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#showImageButton").click(function () {
+          $.ajax({
+            url: "image.html",
+            method: "GET",
+            dataType: "html",
+            success: function (html) {
+              var parser = new DOMParser();
+              var doc = parser.parseFromString(html, "text/html");
+              var images = doc.querySelectorAll("img");
+
+              if (images.length > 0) {
+                var imageContainer = $("#imageContainer");
+                imageContainer.empty(); // Clear previous images
+
+                images.forEach(function (img) {
+                  var imageUrl = img.src;
+                  var imageElement = $("<img>")
+                    .attr("src", imageUrl)
+                    .attr("alt", "Uploaded Image");
+                  imageContainer.append(imageElement);
+                });
+              } else {
+                console.log("No images found in HTML response");
+              }
+            },
+
+            error: function (xhr, status, strErr) {
+              console.log("Error Fetching Image");
+              console.log(xhr);
+              console.log(status);
+              console.log(strErr);
+            },
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <button id="showImageButton">Show Image</button>
+    <div id="imageContainer"></div>
+  </body>
+</html>
+<!-- success: function (html) {
+              var parser = new DOMParser();
+              var doc = parser.parseFromString(html, "text/html");
+              var img = doc.querySelector("img");
+              var imageUrl = img.src;
+              $("#imageContainer").html(
+                imageUrl
+                  ? '<img src="' + imageUrl + '" alt="Uploaded Image">'
+                  : "Image URL not found in HTML response"
+              );
+            }, -->

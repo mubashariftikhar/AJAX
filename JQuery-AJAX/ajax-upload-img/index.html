@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload and Display Image</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <form method="post" action="" enctype="multipart/form-data" id="myform">
+        <div class="preview">
+          <img src="" id="img" width="300" height="300" style="display: none" />
+        </div>
+        <div>
+          <input type="file" id="file" name="file" />
+        </div>
+      </form>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#file").change(function () {
+          var fd = new FormData();
+          var files = $(this)[0].files[0];
+          fd.append("file", files);
+          $.ajax({
+            url: "upload.php",
+            type: "post",
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+              if (response != 0) {
+                $("#img").attr("src", response);
+                $(".preview img").show();
+              } else {
+                alert("File not uploaded");
+              }
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

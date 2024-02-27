@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JQuery AJAX</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        getData();
+      });
+      function getData() {
+        $.ajax({
+          url: "sample.html",
+          type: "GET",
+          dataType: "text",
+          success: successFn,
+          error: errorFn,
+          complete: function (xhr, status) {
+            console.log("The Requesst Has Been Complete");
+          },
+        });
+      }
+      function successFn(result) {
+        console.log("Success");
+        $("#ajaxMessage").append(result);
+      }
+      function errorFn(xhr, status, strErr) {
+        console.log("Error");
+        console.log(xhr);
+        console.log(status);
+        console.log(strErr);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="ajaxMessage"></div>
+  </body>
+</html>
